@@ -33,5 +33,32 @@
 
 # =============================================================================
 # YOUR CODE BELOW — remove the # symbols from the scaffold and fill it in
-# =============================================================================
+#
 
+def check_prime(n):
+    if n < 2:
+        return False
+    if n == 2:
+        return True 
+    if n % 2 == 0:
+        return False
+    i = 3
+    while i * i <= n:
+        if n % i == 0:
+            return False 
+        i += 2
+    return True 
+def main():
+    try:
+        n = int(input("Enter a number: "))   
+        if check_prime(n):
+            print(f"{n} is a prime number.")
+        else:
+            print(f"{n} is NOT a prime number.")
+    except ValueError:
+        print("Please enter a valid integer.")
+
+if __name__ == "__main__":
+    main()  
+
+# =============================================================================

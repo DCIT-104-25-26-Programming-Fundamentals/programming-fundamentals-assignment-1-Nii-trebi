@@ -53,5 +53,66 @@
 #
 # =============================================================================
 # YOUR CODE BELOW — remove the # symbols from the scaffold and fill it in
-# =============================================================================
 
+
+def print_table(number):
+    """Print the multiplication table for one number from 1 to 12."""
+    print(f"Multiplication Table for {number}:")
+    for i in range(1, 13):
+        product = number * i
+        if i < 10:
+            print(f"{number}  x  {i}  =  {product}")
+        else:
+            print(f"{number}  x  {i} =  {product}")
+
+
+def part_a_single_table():
+    """Part A: print one multiplication table."""
+    try:
+        number = int(input("Enter a number: "))
+    except ValueError:
+        print("Error: Please enter a valid integer.")
+        return
+
+    print()
+    print_table(number)
+
+
+def part_b_tables_to_n():
+    """Part B: print multiplication tables for 1 through N."""
+    try:
+        n = int(input("Enter N: "))
+    except ValueError:
+        print("Error: Please enter a valid positive integer.")
+        return
+
+    if n <= 0:
+        print("Error: N must be a positive integer.")
+        return
+
+    print()
+    for number in range(1, n + 1):
+        if number > 1:
+            print("---------------------------")
+        print_table(number)
+
+
+def main():
+    print("Multiplication Table Generator")
+    print("1. Single table (Part A)")
+    print("2. Tables from 1 to N (Part B)")
+    choice = input("Choose an option (1/2): ")
+
+    print()
+    if choice == "1":
+        part_a_single_table()
+    elif choice == "2":
+        part_b_tables_to_n()
+    else:
+        print("Invalid choice.")
+
+
+if __name__ == "__main__":
+    main()
+
+# =============================================================================

@@ -66,5 +66,104 @@
 #
 # =============================================================================
 # YOUR CODE BELOW — remove the # symbols from the scaffold and fill it in
+
+def add(a, b):
+    return a + b
+
+def subtract(a, b):
+    return a - b
+
+def multiply(a, b):
+    return a * b
+
+def divide(a, b):
+    if b == 0:
+        return None
+    return round(a / b, 2)  # round division results to 2 decimal places
+
+def modulus(a, b):
+    if b == 0:
+        return None
+    return a % b
+
+def exponent(a, b):
+    return a ** b
+
+def get_number(prompt):
+    try:
+        return float(input(prompt).strip())
+    except ValueError:
+        print("Error: please enter a valid number.")
+        return None
+
+def print_menu():
+    print("============================")
+    print("     SIMPLE CALCULATOR")
+    print("============================")
+    print("1. Addition")
+    print("2. Subtraction")
+    print("3. Multiplication")
+    print("4. Division")
+    print("5. Modulus")
+    print("6. Exponentiation")
+    print("7. Quit")
+
+def format_num(x):
+    # Show integer values without ".0", otherwise show reasonable float
+    if isinstance(x, float) and x.is_integer():
+        return str(int(x))
+    return str(x)
+
+def main():
+    try:
+        while True:
+            print()
+            print_menu()
+            choice = input("Select an operation (1-7): ").strip()
+            if choice == "7":
+                print("Goodbye!")
+                break
+
+            if choice not in {"1","2","3","4","5","6"}:
+                print("Error: Invalid choice. Please enter a number 1-7.")
+                continue
+
+            a = get_number("Enter first number : ")
+            if a is None:
+                continue
+            b = get_number("Enter second number: ")
+            if b is None:
+                continue
+
+            if choice == "1":
+                res = add(a, b)
+                print(f"Result: {format_num(a)} + {format_num(b)} = {format_num(res)}")
+            elif choice == "2":
+                res = subtract(a, b)
+                print(f"Result: {format_num(a)} - {format_num(b)} = {format_num(res)}")
+            elif choice == "3":
+                res = multiply(a, b)
+                print(f"Result: {format_num(a)} * {format_num(b)} = {format_num(res)}")
+            elif choice == "4":
+                res = divide(a, b)
+                if res is None:
+                    print("Error: Cannot divide by zero.")
+                else:
+                    # Always show division rounded to 2 decimal places
+                    print(f"Result: {format_num(a)} / {format_num(b)} = {res:.2f}")
+            elif choice == "5":
+                res = modulus(a, b)
+                if res is None:
+                    print("Error: Cannot perform modulus by zero.")
+                else:
+                    print(f"Result: {format_num(a)} % {format_num(b)} = {format_num(res)}")
+            elif choice == "6":
+                res = exponent(a, b)
+                print(f"Result: {format_num(a)} ** {format_num(b)} = {format_num(res)}")
+    except (KeyboardInterrupt, EOFError):
+        print("\nGoodbye!")
+
+if __name__ == "__main__":
+    main()
 # =============================================================================
 

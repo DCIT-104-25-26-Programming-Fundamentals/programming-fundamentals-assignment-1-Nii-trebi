@@ -88,5 +88,163 @@
 
 # =============================================================================
 # YOUR CODE BELOW — remove the # symbols from the scaffold and fill it in
+
+def display_menu():
+    print("===============================")
+    print("   STUDENT RECORD SYSTEM MENU")
+    print("===============================")
+    print("1. Add student")
+    print("2. Display all students")
+    print("3. Calculate average score")
+    print("4. Quit")
+
+def get_positive_int(prompt):
+    """Prompt until a positive integer is entered, or return None on invalid input."""
+    try:
+        v = int(input(prompt).strip())
+    except ValueError:
+        print("Error: please enter a whole number.")
+        return None
+    if v <= 0:
+        print("Error: number must be positive.")
+        return None
+    return v
+
+def read_score(prompt):
+    """Read a numeric score (int or float). Return float or None on invalid input."""
+    s = input(prompt).strip()
+    try:
+        score = float(s)
+    except ValueError:
+        print("Error: please enter a numeric score.")
+        return None
+    return score
+
+def format_score(x):
+    """Format score for display: no .0 for whole numbers."""
+    return str(int(x)) if float(x).is_integer() else f"{x:g}"
+
+def add_student(students):
+    """Feature 1: Add a student record."""
+    name = input("Student name: ").strip()
+    if not name:
+        print("Error: name cannot be empty.")
+        return
+
+    sid = input("Student ID: ").strip()
+    if not sid:
+        print("Error: ID cannot be empty.")
+        return
+
+    # Check for duplicate ID
+    if any(s["id"] == sid for s in students):
+        print(f'Error: A student with ID {sid} already exists.')
+        return
+
+    n_scores = get_positive_int("How many scores? ")
+    if n_scores is None:
+        return
+
+    scores = []
+    for i in range(1, n_scores + 1):
+        while True:
+            sc = read_score(f"Enter score {i}: ")
+            if sc is None:
+                # invalid, ask again
+                continue
+            scores.append(sc)
+            break
+
+    students.append({"name": name, "id": sid, "scores": scores})
+    print(f'Student "{name}" added successfully.')
+
+def display_all_students(students):
+    """Feature 2: Display a formatted table of all students."""
+    if not students:
+        print("No student records available.")
+        return
+
+    # Prepare table columns
+    name_col = "Name"
+    id_col = "ID"
+    scores_col = "Scores"
+    avg_col = "Average"
+
+    # Compute widths
+    name_w = max(len(name_col), max(len(s["name"]) for s in students))
+    id_w = max(len(id_col), max(len(s["id"]) for s in students))
+    scores_strs = []
+    for s in students:
+        scores_str = ", ".join(format_score(x) for x in s["scores"])
+        scores_strs.append(scores_str)
+    scores_w = max(len(scores_col), max(len(x) for x in scores_strs))
+    avg_w = len(avg_col)
+
+    sep = "-" * (name_w + id_w + scores_w + avg_w + 10)
+    print(sep)
+    header = f"{name_col.ljust(name_w)}   {id_col.ljust(id_w)}   {scores_col.ljust(scores_w)}   {avg_col.rjust(avg_w)}"
+    print(header)
+    print(sep)
+
+    for s, scores_str in zip(students, scores_strs):
+        scores = s["scores"]
+        avg = sum(scores) / len(scores) if scores else 0.0
+        avg_str = f"{avg:.2f}"
+        line = (
+            f"{s['name'].ljust(name_w)}   "
+            f"{s['id'].ljust(id_w)}   "
+            f"{scores_str.ljust(scores_w)}   "
+            f"{avg_str.rjust(avg_w)}"
+        )
+        print(line)
+    print(sep)
+
+def calculate_average_score(students):
+    """Feature 3: Calculate average for a specific student by ID."""
+    if not students:
+        print("No student records available.")
+        return
+
+    sid = input("Enter student ID: ").strip()
+    if not sid:
+        print("Error: ID cannot be empty.")
+        return
+
+    student = next((s for s in students if s["id"] == sid), None)
+    if student is None:
+        print(f"Error: No student found with ID {sid}.")
+        return
+
+    scores = student["scores"]
+    if not scores:
+        print(f"{student['name']} has no scores recorded.")
+        return
+
+    avg = sum(scores) / len(scores)
+    print(f"{student['name']}'s average score: {avg:.2f}")
+
+def main():
+    students = []
+    try:
+        while True:
+            print()
+            display_menu()
+            choice = input("Enter your choice (1-4): ").strip()
+            if choice == "1":
+                add_student(students)
+            elif choice == "2":
+                display_all_students(students)
+            elif choice == "3":
+                calculate_average_score(students)
+            elif choice == "4":
+                print("Goodbye!")
+                break
+            else:
+                print("Error: Invalid choice. Please enter 1, 2, 3, or 4.")
+    except (KeyboardInterrupt, EOFError):
+        print("\nGoodbye!")
+
+if __name__ == "__main__":
+    main()
 # =============================================================================
 
